@@ -51,7 +51,7 @@ A modern movie and TV show streaming discovery app built with **React 18**, **Vi
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/kweephyo-pmt/weflix_v2.git
+   git clone https://github.com/kweephyo-pmt/WeFlix_v2.git
    cd weflix_v2
    ```
 
