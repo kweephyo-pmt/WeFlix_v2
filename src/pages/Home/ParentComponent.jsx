@@ -37,6 +37,7 @@ function ParentComponent() {
   })();
 
   const handleNavigation = (page) => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
     if (page === 'home')        navigate('/');
     else if (page === 'movies') navigate('/movies');
     else if (page === 'series') navigate('/series');
@@ -45,6 +46,7 @@ function ParentComponent() {
 
   const handleGenreSelect = (genreId) => {
     const type = activePage === 'series' ? 'tv' : 'movie';
+    window.scrollTo({ top: 0, behavior: 'auto' });
     navigate(buildBrowsePath(type, genreId, 'popularity.desc'));
   };
 
@@ -95,7 +97,7 @@ function ParentComponent() {
       </div>
 
       {/* Mobile bottom navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0b0f18]/95 backdrop-blur-md border-t border-white/[0.07] flex items-center justify-around px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#070b14] border-t border-white/[0.08] shadow-[0_-10px_30px_rgba(0,0,0,0.55)] flex items-center justify-around px-2 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.45rem)]">
         {[
           { id: 'home',   icon: BiHomeAlt,   label: 'Home'    },
           { id: 'movies', icon: BiMoviePlay, label: 'Movies'  },

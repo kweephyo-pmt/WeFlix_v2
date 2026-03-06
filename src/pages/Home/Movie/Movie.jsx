@@ -54,12 +54,18 @@ function Movie() {
   }, [genreId, sortBy, searchParams, location.pathname, navigate]);
 
   const handleSort = (value) => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
     navigate(buildBrowsePath('movie', genreId, value));
   };
 
   const handleGenreChip = (id) => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
     navigate(buildBrowsePath('movie', id, 'popularity.desc'));
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [genreId, sortBy]);
 
   const activeSortLabel = SORT_OPTIONS.find((opt) => opt.value === sortBy)?.label || 'Most Popular';
 
@@ -111,25 +117,6 @@ function Movie() {
           )}
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center rounded-full border border-white/[0.1] bg-white/[0.03] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-            Movies
-          </span>
-          <span className="inline-flex items-center rounded-full border border-red-500/30 bg-red-500/12 px-3 py-1 text-[11px] font-semibold text-red-300">
-            {genre?.name ?? 'Trending'}
-          </span>
-          <span className="inline-flex items-center rounded-full border border-white/[0.1] bg-white/[0.03] px-3 py-1 text-[11px] font-semibold text-gray-300">
-            {activeSortLabel}
-          </span>
-          {(genreId || sortBy !== 'popularity.desc') && (
-            <button
-              onClick={() => navigate('/movies')}
-              className="inline-flex items-center rounded-full border border-white/[0.12] bg-white/[0.04] px-3 py-1 text-[11px] font-semibold text-gray-300 hover:text-white hover:bg-white/[0.08] transition-colors motion-fast"
-            >
-              Clear Filters
-            </button>
-          )}
-        </div>
       </div>
       </div>
 
