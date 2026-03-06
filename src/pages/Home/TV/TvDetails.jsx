@@ -24,13 +24,6 @@ const BACKDROP = "https://image.tmdb.org/t/p/original";
 const POSTER   = "https://image.tmdb.org/t/p/w342";
 const STILL    = "https://image.tmdb.org/t/p/w300";
 
-const GENRE_COLORS = [
-  "bg-white/[0.07] border-white/[0.14] text-gray-200",
-  "bg-white/[0.07] border-white/[0.14] text-gray-200",
-  "bg-white/[0.07] border-white/[0.14] text-gray-200",
-  "bg-white/[0.07] border-white/[0.14] text-gray-200",
-];
-
 const MetaBadge = ({ icon: Icon, children }) => (
   <span className="flex items-center gap-1.5 bg-white/[0.06] border border-white/[0.12] text-gray-200 text-xs font-semibold px-3 py-1.5 rounded-full">
     {Icon && <Icon className="text-gray-400 shrink-0 text-[12px]" />}

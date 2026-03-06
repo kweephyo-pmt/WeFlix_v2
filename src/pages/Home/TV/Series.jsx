@@ -66,8 +66,6 @@ function Series() {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [genreId, sortBy]);
 
-  const activeSortLabel = SORT_OPTIONS.find((opt) => opt.value === sortBy)?.label || 'Most Popular';
-
   return (
     <div className="flex flex-col min-h-screen">
       <SEO
