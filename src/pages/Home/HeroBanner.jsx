@@ -72,10 +72,37 @@ export default function HeroBanner() {
 
   if (loading) {
     return (
-      <div className="w-full h-[72vh] md:h-screen bg-[#0a0c12] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-12 h-12 border-4 border-white/20 border-t-white/70 rounded-full animate-spin" />
-          <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 font-semibold">Loading Home</p>
+      <div className="relative w-full h-[72vh] md:h-screen overflow-hidden bg-[#0a0c12]">
+        {/* Ambient backdrop shimmer */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0c12] via-[#121826] to-[#0a0c12] opacity-70 animate-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c12] via-transparent to-black/35" />
+
+        {/* Skeleton content block */}
+        <div className="relative z-10 h-full flex flex-col justify-end md:justify-center px-6 md:px-14 pb-20 md:pb-16 max-w-2xl">
+          <div className="w-24 h-7 rounded-full bg-white/[0.08] mb-4 animate-pulse" />
+          <div className="space-y-3 mb-5">
+            <div className="h-10 md:h-12 w-[85%] rounded-lg bg-white/[0.09] animate-pulse" />
+            <div className="h-10 md:h-12 w-[65%] rounded-lg bg-white/[0.08] animate-pulse" />
+          </div>
+          <div className="flex gap-2 mb-6">
+            <div className="h-4 w-20 rounded-full bg-white/[0.08] animate-pulse" />
+            <div className="h-4 w-16 rounded-full bg-white/[0.07] animate-pulse" />
+            <div className="h-4 w-24 rounded-full bg-white/[0.07] animate-pulse" />
+          </div>
+          <div className="space-y-2 mb-7 hidden sm:block">
+            <div className="h-3.5 w-full rounded bg-white/[0.06] animate-pulse" />
+            <div className="h-3.5 w-[92%] rounded bg-white/[0.06] animate-pulse" />
+            <div className="h-3.5 w-[78%] rounded bg-white/[0.06] animate-pulse" />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="h-11 w-36 rounded-full bg-white/[0.12] animate-pulse" />
+            <div className="h-11 w-32 rounded-full bg-white/[0.09] animate-pulse" />
+          </div>
+        </div>
+
+        {/* Subtle loading label */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-gray-500 font-semibold">Loading Highlights</p>
         </div>
       </div>
     );
