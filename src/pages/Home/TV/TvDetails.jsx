@@ -6,7 +6,7 @@ import React, {
   memo,
   useRef,
 } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchSeriesDetails, fetchAllEpisodes, fetchRelatedSeries } from "../Fetcher";
@@ -38,9 +38,17 @@ const MetaBadge = ({ icon: Icon, children }) => (
   </span>
 );
 
+const getValidParamNumber = (params, key) => {
+  const raw = params.get(key);
+  if (!raw) return null;
+  const value = Number(raw);
+  return Number.isInteger(value) && value > 0 ? value : null;
+};
+
 const TvDetails = ({ tvId: tvIdProp }) => {
   const { slug } = useParams();
   const location = useLocation();
+  const [, setSearchParams] = useSearchParams();
   const tvId = tvIdProp ?? getIdFromDetailSlug(slug);
   const navigate = useNavigate();
   const [tv,             setTv]             = useState(null);
@@ -56,6 +64,7 @@ const TvDetails = ({ tvId: tvIdProp }) => {
   const [isDraggingEpisodes, setIsDraggingEpisodes] = useState(false);
   const [isDraggingRelated, setIsDraggingRelated] = useState(false);
   const [related, setRelated] = useState([]);
+  const numericTvId = Number(tvId);
 
   const handleBack = () => {
     if (location.state?.from) {
@@ -107,6 +116,7 @@ const TvDetails = ({ tvId: tvIdProp }) => {
         .filter(s => s.season_number > 0)
         .sort((a, b) => a.season_number - b.season_number);
       setAllSeasons(filtered);
+
       if (filtered.length > 0) {
         const first = filtered[0];
         const firstEp = first.episodes?.find(e => e.episode_number)?.episode_number ?? 1;
@@ -140,9 +150,52 @@ const TvDetails = ({ tvId: tvIdProp }) => {
     if (!isLegacyRoute) return;
     const canonicalPath = toDetailPath('tv', tv.id, tv.name);
     if (location.pathname !== canonicalPath) {
-      navigate(canonicalPath, { replace: true, state: location.state });
+      navigate({ pathname: canonicalPath, search: location.search }, { replace: true, state: location.state });
     }
-  }, [tv, location.pathname, location.state, navigate]);
+  }, [tv, location.pathname, location.search, location.state, navigate]);
+
+  useEffect(() => {
+    if (!allSeasons.length) return;
+    if (loading) return;
+    if (!tv?.id || Number(tv.id) !== numericTvId) return;
+
+    const params = new URLSearchParams(location.search);
+    const urlSeason = getValidParamNumber(params, 'season');
+    const urlEpisode = getValidParamNumber(params, 'episode');
+    if (urlSeason === null && urlEpisode === null) return;
+
+    const selectedSeason = allSeasons.find((s) => s.season_number === urlSeason) ?? allSeasons[0];
+    const selectedEpisode =
+      selectedSeason.episodes?.find((e) => e.episode_number === urlEpisode)?.episode_number
+      ?? selectedSeason.episodes?.find((e) => e.episode_number)?.episode_number
+      ?? 1;
+
+    if (viewingSeason !== selectedSeason.season_number) {
+      setViewingSeason(selectedSeason.season_number);
+    }
+    if (playingSeason !== selectedSeason.season_number) {
+      setPlayingSeason(selectedSeason.season_number);
+    }
+    if (playingEpisode !== selectedEpisode) {
+      setPlayingEpisode(selectedEpisode);
+    }
+  }, [allSeasons, location.search, loading, tv, numericTvId]);
+
+  useEffect(() => {
+    if (!allSeasons.length || playingSeason === null || playingEpisode === null) return;
+    if (loading) return;
+    if (!tv?.id || Number(tv.id) !== numericTvId) return;
+
+    const params = new URLSearchParams(location.search);
+    const currentSeason = getValidParamNumber(params, 'season');
+    const currentEpisode = getValidParamNumber(params, 'episode');
+    if (currentSeason === playingSeason && currentEpisode === playingEpisode) return;
+
+    const nextParams = new URLSearchParams(location.search);
+    nextParams.set('season', String(playingSeason));
+    nextParams.set('episode', String(playingEpisode));
+    setSearchParams(nextParams, { replace: true });
+  }, [allSeasons.length, playingSeason, playingEpisode, location.search, setSearchParams, loading, tv, numericTvId]);
 
   useEffect(() => {
     if (activeEpisodeRef.current && episodeListRef.current && viewingSeason === playingSeason) {
@@ -295,7 +348,7 @@ const TvDetails = ({ tvId: tvIdProp }) => {
     : overview;
 
   const handleRelatedSelect = (item) => {
-    navigate(toDetailPath('tv', item.id, item.name || item.title), {
+    navigate({ pathname: toDetailPath('tv', item.id, item.name || item.title), search: '' }, {
       state: { from: '/series' },
     });
   };
