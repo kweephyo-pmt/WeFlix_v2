@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
 import {
   BiSearch,
   BiHomeAlt,
@@ -83,7 +84,11 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect }) {
             >
               {/* Active left-bar indicator */}
               {isActive && (
-                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 rounded-full bg-red-500" />
+                <motion.span
+                  layoutId="sidebar-nav-active-indicator"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 rounded-full bg-red-500"
+                  transition={{ type: 'spring', stiffness: 520, damping: 36 }}
+                />
               )}
               <Icon className={`text-[24px] shrink-0 transition-colors duration-200 ${isActive ? 'text-red-400' : ''}`} />
               <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 delay-75">
@@ -125,7 +130,11 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect }) {
                     `}
                   >
                     {isActiveGenre && (
-                      <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full bg-red-500" />
+                      <motion.span
+                        layoutId="sidebar-genre-active-indicator"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full bg-red-500"
+                        transition={{ type: 'spring', stiffness: 520, damping: 36 }}
+                      />
                     )}
                     <span className={`
                       w-2 h-2 rounded-full shrink-0 transition-all duration-200

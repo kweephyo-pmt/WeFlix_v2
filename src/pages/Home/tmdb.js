@@ -58,6 +58,8 @@ export const SPECIAL_CATEGORIES = {
   movie: [
     { id: -1, name: 'Anime' },
     { id: -2, name: 'Thai Movie' },
+    { id: -3, name: 'Korean Movie' },
+    { id: -4, name: 'Chinese Movie' },
   ],
   tv: [
     { id: -1, name: 'Anime' },
@@ -73,6 +75,8 @@ export const SPECIAL_PARAMS = {
   '-1_movie': { with_genres: '16', with_keywords: '210024' },          // Anime movies
   '-1_tv':    { with_genres: '16', with_keywords: '210024' },          // Anime TV
   '-2_movie': { with_origin_country: 'TH' },                           // Thai Movie
+  '-3_movie': { with_origin_country: 'KR', with_original_language: 'ko' }, // Korean Movie
+  '-4_movie': { with_origin_country: 'CN', with_original_language: 'zh' }, // Chinese Movie
   '-2_tv':    { with_origin_country: 'KR', with_genres: '18' },       // K-Drama
   '-3_tv':    { with_origin_country: 'CN', without_genres: '16' }, // C-Drama (exclude donghua/animation)
   '-4_tv':    { with_genres: '16', with_original_language: 'zh' },    // Donghua (Chinese-language animation)

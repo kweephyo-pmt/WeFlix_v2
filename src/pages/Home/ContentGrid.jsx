@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
 import ContentCard from './ContentCard';
 import { fetchContentByGenre, fetchTrending } from './Fetcher';
 import { SPECIAL_PARAMS } from './tmdb';
@@ -25,6 +26,7 @@ const ContentGrid = ({ genreId, type, onSelect, sortBy = 'popularity.desc' }) =>
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [refreshToken, setRefreshToken] = useState(0);
 
   const hasMoreRef   = useRef(true);
   const loadingRef   = useRef(false);
@@ -86,6 +88,11 @@ const ContentGrid = ({ genreId, type, onSelect, sortBy = 'popularity.desc' }) =>
           seenIdsRef.current.add(item.id);
           return true;
         });
+
+        if (page === 1) {
+          setRefreshToken((prev) => prev + 1);
+        }
+
         setItems((prev) => (page === 1 ? unique : [...prev, ...unique]));
         hasMoreRef.current = unique.length > 0 && page < MAX_PAGES;
       })
@@ -143,9 +150,16 @@ const ContentGrid = ({ genreId, type, onSelect, sortBy = 'popularity.desc' }) =>
         : '/placeholder.svg';
 
       return (
-        <div
-          key={item.id}
+        <motion.div
+          key={`${refreshToken}-${item.id}`}
           ref={isLastElement ? lastElementRef : null}
+          initial={{ opacity: 0, y: 12, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{
+            duration: 0.26,
+            ease: 'easeOut',
+            delay: Math.min(index, 14) * 0.018,
+          }}
         >
           <ContentCard
             title={item.title || item.name}
@@ -154,7 +168,7 @@ const ContentGrid = ({ genreId, type, onSelect, sortBy = 'popularity.desc' }) =>
             onClick={() => onSelect(item)}
             releaseDate={item.release_date || item.first_air_date}
           />
-        </div>
+        </motion.div>
       );
     });
   };

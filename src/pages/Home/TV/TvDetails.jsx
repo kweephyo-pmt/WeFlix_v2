@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
+import { motion } from "framer-motion";
 import { fetchSeriesDetails, fetchAllEpisodes } from "../Fetcher";
 import { getIdFromDetailSlug, toDetailPath } from "../urlUtils";
 import { FaRedo, FaStar, FaArrowLeft, FaTv } from "react-icons/fa";
@@ -391,7 +392,7 @@ const TvDetails = ({ tvId: tvIdProp }) => {
                     key={season.id ?? season.season_number}
                     onClick={() => setViewingSeason(season.season_number)}
                     className={`
-                      relative shrink-0 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap
+                      relative shrink-0 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap overflow-hidden
                       border-2 transition-colors duration-150 focus:outline-none
                       ${viewingSeason === season.season_number
                         ? "border-red-500 bg-red-600 text-white shadow-[0_0_18px_rgba(220,38,38,0.35)]"
@@ -399,6 +400,13 @@ const TvDetails = ({ tvId: tvIdProp }) => {
                       }
                     `}
                   >
+                    {viewingSeason === season.season_number && (
+                      <motion.span
+                        layoutId="season-tab-underline"
+                        className="absolute left-2 right-2 bottom-1 h-[2px] rounded-full bg-red-200/90"
+                        transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                      />
+                    )}
                     {playingSeason === season.season_number && viewingSeason !== season.season_number && (
                       <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-red-400" />
                     )}
