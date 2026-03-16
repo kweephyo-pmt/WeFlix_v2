@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { fetchMovieDetails, fetchRelatedMovies } from "../Fetcher";
 import { getIdFromDetailSlug, toDetailPath } from "../urlUtils";
-import { FaRedo, FaStar, FaArrowLeft, FaFilm } from "react-icons/fa";
+import { FaRedo, FaStar, FaArrowLeft, FaFilm, FaInfoCircle } from "react-icons/fa";
 import { BiCalendar, BiTime, BiGlobe } from "react-icons/bi";
 import DetailPageSkeleton from "../reused/DetailPageSkeleton";
 import VideoPlayer from "./VideoPlayer";
@@ -14,26 +14,6 @@ const MemoizedVideoPlayer = memo(VideoPlayer);
 
 const BACKDROP = "https://image.tmdb.org/t/p/original";
 const POSTER   = "https://image.tmdb.org/t/p/w500";
-
-const GENRE_COLORS = [
-  "bg-white/[0.07] border-white/[0.14] text-gray-200",
-  "bg-white/[0.07] border-white/[0.14] text-gray-200",
-  "bg-white/[0.07] border-white/[0.14] text-gray-200",
-  "bg-white/[0.07] border-white/[0.14] text-gray-200",
-];
-
-const GenreTag = ({ children, index }) => (
-  <span className={`border text-xs font-bold px-4 py-1.5 rounded-full whitespace-nowrap tracking-wide ${GENRE_COLORS[index % GENRE_COLORS.length]}`}>
-    {children}
-  </span>
-);
-
-const MetaBadge = ({ icon: Icon, children }) => (
-  <span className="flex items-center gap-1.5 bg-white/[0.06] border border-white/[0.12] text-gray-200 text-xs font-semibold px-3 py-1.5 rounded-full">
-    {Icon && <Icon className="text-gray-400 shrink-0 text-[12px]" />}
-    {children}
-  </span>
-);
 
 const MovieDetails = ({ movieId: movieIdProp }) => {
   const { slug } = useParams();
@@ -91,6 +71,10 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
   }, [movieId]);
 
   useEffect(() => { load(); }, [load]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [movieId]);
 
   useEffect(() => {
     if (!movie?.id) return;
@@ -160,13 +144,13 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
   );
 
   if (error) return (
-    <div className="min-h-[60vh] flex items-center justify-center p-6">
-      <div className="bg-red-900/20 border border-red-700/50 rounded-2xl p-8 max-w-sm w-full text-center">
-        <p className="text-red-300 mb-6">{error}</p>
+    <div className="min-h-[60vh] flex items-center justify-center p-6 bg-[#090b10]">
+      <div className="bg-red-900/10 border border-red-700/30 rounded-2xl p-8 max-w-sm w-full text-center backdrop-blur-md">
+        <p className="text-red-400 mb-6 font-medium">{error}</p>
         <button
           onClick={load}
           disabled={retrying}
-          className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+          className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-lg shadow-red-600/20"
         >
           <FaRedo className={retrying ? "animate-spin" : ""} />
           {retrying ? "Retrying…" : "Retry"}
@@ -187,23 +171,7 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
     : overview;
 
   return (
-    <div className="min-h-screen bg-[#0b0b0f] text-white">
-      {/* ── Full-page atmospheric backdrop ──────── */}
-      {movie.backdrop_path && (
-        <div aria-hidden="true" className="fixed inset-0 z-0 pointer-events-none select-none overflow-hidden">
-          <img
-            src={`${BACKDROP}${movie.backdrop_path}`}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover object-top"
-            style={{ filter: "brightness(0.28) saturate(1.15)", transform: "scale(1.05)" }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0b0b0f]/30 via-[#0b0b0f]/65 to-[#0b0b0f]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0b0b0f]/50 to-transparent" />
-        </div>
-      )}
-
-      {/* ── Page content (above backdrop) ─────── */}
-      <div className="relative z-[1]">
+    <div className="min-h-screen bg-[#07080a] text-gray-200 selection:bg-red-500/30">
       <SEO
         title={`${movie.title}${year ? ` (${year})` : ''} — Watch Free on WeFlix`}
         description={
@@ -238,144 +206,89 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
         }}
       />
 
-      {/* ══════ BACK BUTTON ══════ */}
-      <div className="px-4 pt-5 md:px-12 max-w-7xl mx-auto w-full">
-        <button
-          onClick={handleBack}
-          className="group inline-flex items-center gap-2 bg-white/[0.05] hover:bg-white/[0.12] backdrop-blur-sm border border-white/[0.12] text-gray-300 hover:text-white text-sm font-semibold px-4 py-2 rounded-full transition-all duration-200"
-        >
-          <FaArrowLeft className="text-xs group-hover:-translate-x-1 transition-transform duration-200" />
-          <span>Back</span>
-        </button>
-      </div>
-
-      {/* ══════ PLAYER ══════ */}
-      <div className="px-3 sm:px-5 md:px-10 lg:px-16 pt-5 pb-8 md:pb-12">
-        <div className="w-full max-w-[1180px] mx-auto">
-        {/* Player header */}
-        <div className="flex items-center gap-3 mb-4 bg-white/[0.04] border border-white/[0.1] rounded-2xl px-4 py-3">
-          <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-red-600/25 border border-red-500/40 shrink-0">
-            <FaFilm className="text-red-400 text-sm" />
-          </div>
-          <div className="min-w-0">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-semibold mb-0.5">Now Playing</p>
-            <h2 className="text-sm md:text-base font-semibold text-white truncate leading-tight">{movie.title}</h2>
-          </div>
-          {rating && (
-            <div className="ml-auto flex items-center gap-1.5 bg-yellow-400/10 border border-yellow-400/20 rounded-xl px-3 py-1.5 shrink-0">
-              <FaStar className="text-yellow-400 text-[11px]" />
-              <span className="text-yellow-300 font-bold text-sm">{rating}</span>
-              <span className="text-gray-500 text-xs">/10</span>
-            </div>
+      {/* ── HERO SECTION ── */}
+      <div className="relative w-full min-h-[70vh] flex flex-col justify-end pt-32 pb-20">
+        {/* Backdrop Image */}
+        <div className="absolute inset-0 z-0 select-none overflow-hidden">
+          {movie.backdrop_path ? (
+            <img
+              src={`${BACKDROP}${movie.backdrop_path}`}
+              alt=""
+              className="w-full h-full object-cover object-top"
+              style={{ filter: "brightness(0.6) contrast(1.1) saturate(1.1)", transform: "scale(1.02)" }}
+            />
+          ) : (
+            <div className="w-full h-full bg-[#111319] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-800 to-[#111319]" />
           )}
+          {/* Gradients for text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#07080a] via-[#07080a]/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#07080a]/90 via-[#07080a]/50 to-transparent" />
         </div>
 
-        {/* Player frame */}
-        <div className="w-full rounded-2xl overflow-hidden ring-1 ring-white/[0.12] shadow-[0_18px_60px_rgba(0,0,0,0.65)] bg-black relative">
-          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/[0.05] pointer-events-none z-10" />
-          <div className="w-full aspect-video">
-            <MemoizedVideoPlayer movieId={movieId} title={movie.title} />
-          </div>
+        {/* Back Button */}
+        <div className="absolute top-0 left-0 right-0 z-20 p-6 md:p-10 flex">
+          <button
+            onClick={handleBack}
+            className="group flex items-center gap-2 bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/10 text-gray-200 hover:text-white text-sm font-medium px-5 py-2.5 rounded-full transition-all duration-300"
+          >
+            <FaArrowLeft className="group-hover:-translate-x-1 transition-transform duration-300" />
+            <span>Back</span>
+          </button>
         </div>
 
-        {/* uBlock notice */}
-        <div className="mt-3.5 flex items-start gap-3 bg-yellow-500/[0.06] border border-yellow-500/[0.18] rounded-xl px-4 py-3">
-          <span className="text-yellow-400 text-base shrink-0 mt-0.5">🛡️</span>
-          <p className="text-yellow-200/60 text-xs leading-relaxed">
-            For a better experience with fewer ads, install{" "}
-            <a
-              href="https://ublockorigin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-yellow-400 font-semibold underline underline-offset-2 hover:text-yellow-300 transition-colors"
-            >
-              uBlock Origin
-            </a>
-            {" "}in your browser.
-          </p>
-        </div>
-        </div>
-      </div>
-
-      {/* ══════ HERO / DETAILS ══════ */}
-      <div className="relative w-full overflow-hidden" style={{ minHeight: 460 }}>
-        {/* Backdrop */}
-        {movie.backdrop_path ? (
-          <img
-            src={`${BACKDROP}${movie.backdrop_path}`}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover object-top scale-105"
-            style={{ filter: "brightness(0.55) saturate(1.2)" }}
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#111827] to-[#0a0c12]" />
-        )}
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0b0b0f] via-[#0b0b0f]/80 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0b0b0f] via-[#0b0b0f]/50 to-transparent" />
-        {/* Top fade from player section */}
-        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#0b0b0f] to-transparent" />
-
-        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-end gap-6 md:gap-10 px-4 sm:px-6 md:px-12 pt-10 pb-12 md:pb-16 max-w-7xl mx-auto">
-
-          {/* Poster */}
+        {/* Hero Content */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-end gap-8 lg:gap-14">
+          
+          {/* Poster (Desktop) */}
           {movie.poster_path && (
-            <div className="shrink-0 hidden md:block self-end">
-              <div className="relative">
-                <img
-                  src={`${POSTER}${movie.poster_path}`}
-                  alt={movie.title}
-                  className="relative w-44 lg:w-56 rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.75)] ring-1 ring-white/[0.18]"
-                />
-              </div>
+            <div className="hidden md:block shrink-0 z-10">
+              <img
+                src={`${POSTER}${movie.poster_path}`}
+                alt={movie.title}
+                className="w-48 lg:w-64 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] ring-1 ring-white/10 group-hover:scale-105 transition-transform duration-700"
+              />
             </div>
           )}
 
           {/* Info */}
-          <div className="flex flex-col gap-4 w-full max-w-2xl pb-2">
-            {/* Tagline */}
+          <div className="flex-1 max-w-3xl pb-2">
             {movie.tagline && (
-              <p className="text-red-400/75 text-xs sm:text-sm font-medium italic tracking-wide border-l-2 border-red-500/40 pl-3">
+              <p className="text-red-400 font-semibold tracking-wider text-xs md:text-sm uppercase mb-3 drop-shadow-md">
                 {movie.tagline}
               </p>
             )}
 
-            {/* Title */}
-            <div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.3rem] font-black tracking-tight leading-[1.02] mb-1" style={{ textShadow: '0 2px 24px rgba(0,0,0,0.75)' }}>
-                {movie.title}
-              </h1>
-              {movie.original_title && movie.original_title !== movie.title && (
-                <p className="text-gray-400 text-sm font-medium">{movie.original_title}</p>
-              )}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.05] mb-4 drop-shadow-2xl font-sans">
+              {movie.title}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-gray-300 mb-6 drop-shadow-md">
+              {year && <span className="flex items-center gap-1.5"><BiCalendar className="text-gray-400 text-base" /> {year}</span>}
+              {runtime && <span className="flex items-center gap-1.5"><BiTime className="text-gray-400 text-base" /> {runtime}</span>}
+              {rating && <span className="flex items-center gap-1.5"><FaStar className="text-yellow-500 text-base" /> {rating}</span>}
             </div>
 
-            {/* Meta row */}
-            <div className="flex flex-wrap items-center gap-2">
-              {year    && <MetaBadge icon={BiCalendar}>{year}</MetaBadge>}
-              {runtime && <MetaBadge icon={BiTime}>{runtime}</MetaBadge>}
-              {movie.original_language && (
-                <MetaBadge icon={BiGlobe}>{movie.original_language.toUpperCase()}</MetaBadge>
-              )}
-            </div>
-
-            {/* Genre tags */}
             {genres.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {genres.map((g, i) => <GenreTag key={g.id} index={i}>{g.name}</GenreTag>)}
-              </div>
+               <div className="flex flex-wrap gap-2 mb-6">
+                 {genres.map(g => (
+                   <span key={g.id} className="bg-white/10 hover:bg-white/20 transition-colors backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-xs font-semibold text-gray-200 shadow-sm">
+                     {g.name}
+                   </span>
+                 ))}
+               </div>
             )}
 
-            {/* Overview */}
             {overview && (
-              <div className="border-l-2 border-red-500/50 pl-4">
-                <p className="text-gray-300 text-sm leading-7">{truncated}</p>
+              <div className="relative">
+                <p className="text-gray-300/90 leading-relaxed md:text-lg drop-shadow-md max-w-2xl">
+                  {truncated}
+                </p>
                 {overview.length > 280 && (
                   <button
                     onClick={() => setShowOverview(p => !p)}
-                    className="mt-2.5 text-red-400 hover:text-red-300 text-xs font-bold transition-colors"
+                    className="mt-3 text-white font-semibold hover:text-red-400 transition-colors text-sm underline underline-offset-4"
                   >
-                    {showOverview ? "Show less ↑" : "Read more ↓"}
+                    {showOverview ? "Show Less" : "Read More"}
                   </button>
                 )}
               </div>
@@ -384,23 +297,62 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
         </div>
       </div>
 
-      {/* ══════ PRODUCTION META ══════ */}
+      {/* ── PLAYER & EXTRA CONTENT ── */}
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 -mt-4 md:-mt-10 mb-20">
+        
+        {/* Video Player Container */}
+        <div className="bg-[#0f1117]/80 backdrop-blur-xl border border-white/5 rounded-2xl md:rounded-[2rem] p-2 md:p-5 shadow-2xl mb-6 ring-1 ring-white/5">
+          <div className="flex items-center gap-3 mb-4 px-3 pt-2">
+             <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center shrink-0 border border-red-500/30">
+               <FaFilm className="text-red-400 text-sm" />
+             </div>
+             <div>
+               <p className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-red-500/80 mb-0.5">Stream Now</p>
+               <h2 className="text-sm md:text-base font-semibold text-white/90 truncate">{movie.title}</h2>
+             </div>
+          </div>
+          
+          <div className="w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden bg-black ring-1 ring-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] relative">
+            <MemoizedVideoPlayer movieId={movieId} title={movie.title} />
+          </div>
+        </div>
+
+        {/* Info Banner */}
+        <div className="flex items-start gap-4 bg-blue-900/10 border border-blue-500/20 rounded-2xl p-4 md:p-5 mx-2 md:mx-0">
+          <FaInfoCircle className="text-blue-400 text-xl shrink-0 mt-0.5" />
+          <p className="text-blue-200/70 text-sm leading-relaxed">
+            For the best ad-free streaming experience, we highly recommend using {" "}
+            <a
+              href="https://ublockorigin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 font-semibold underline underline-offset-2 hover:text-blue-300 transition-colors"
+            >
+              uBlock Origin
+            </a>
+            . Enjoy uninterrupted playback.
+          </p>
+        </div>
+      </div>
+
+      {/* ── RELATED TITLES ── */}
       {related.length > 0 && (
-        <section className="px-3 sm:px-5 md:px-10 lg:px-16 pb-10">
+        <section className="px-4 sm:px-6 md:px-12 pb-16">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg md:text-xl font-black tracking-tight">More Like This</h3>
-              <span className="text-[11px] uppercase tracking-[0.16em] text-gray-500 font-semibold">Recommended</span>
-            </div>
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-6 tracking-tight flex items-center gap-3">
+              <span className="w-1.5 h-6 bg-red-500 rounded-full inline-block"></span>
+              More Like This
+            </h3>
+            
             <div
               ref={relatedListRef}
               onMouseDown={onRelatedMouseDown}
               onMouseMove={onRelatedMouseMove}
               onMouseLeave={endRelatedDrag}
-              className={`grid grid-flow-col auto-cols-[155px] md:auto-cols-[170px] gap-3 overflow-x-auto hide-scrollbar pb-2 select-none ${isDraggingRelated ? 'cursor-grabbing' : 'cursor-grab'}`}
+              className={`grid grid-flow-col auto-cols-[140px] md:auto-cols-[180px] gap-4 md:gap-5 overflow-x-auto hide-scrollbar pb-6 select-none ${isDraggingRelated ? 'cursor-grabbing' : 'cursor-grab'}`}
             >
               {related.map((item) => (
-                <div key={item.id} className="shrink-0">
+                <div key={item.id} className="shrink-0 transition-transform duration-300 hover:-translate-y-2">
                   <ContentCard
                     title={item.title || item.name}
                     poster={item.poster_path ? `${POSTER}${item.poster_path}` : '/placeholder.svg'}
@@ -418,28 +370,26 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
         </section>
       )}
 
-      <footer className="bg-[#0a0c12] mt-6">
-        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        <div className="max-w-5xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-gray-600">
-          <div className="flex items-center gap-3">
-            <span className="text-white font-black text-sm">We<span className="text-red-500">Flix</span></span>
-            <span>·</span>
-            <span>Developed by <span className="text-gray-400 font-semibold">Phyo Min Thein</span></span>
+      {/* ── FOOTER ── */}
+      <footer className="bg-[#040507] border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs md:text-sm text-gray-500">
+          <div className="flex items-center gap-2">
+            <span className="text-white font-black text-base">We<span className="text-red-500">Flix</span></span>
+            <span className="mx-2 opacity-50">|</span>
+            <span>Developed by <span className="text-gray-300 font-medium">Phyo Min Thein</span></span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <span>© {new Date().getFullYear()} WeFlix</span>
-            <span>·</span>
+            <span className="mx-2 opacity-50">|</span>
             <span>
               Data by{' '}
-              <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white underline underline-offset-2 transition-colors">
+              <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors font-medium">
                 TMDB
               </a>
             </span>
           </div>
         </div>
       </footer>
-
-      </div>{/* end z-[1] content wrapper */}
     </div>
   );
 };
@@ -449,4 +399,5 @@ MovieDetails.propTypes = {
 };
 
 export default memo(MovieDetails);
+
 
