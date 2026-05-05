@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { FaServer } from 'react-icons/fa';
 
 const SOURCES = [
-  { name: 'Server 1 (VidSrc.cc)', url: (id, s, e) => `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}` },
-  { name: 'Server 2 (VidLink)', url: (id, s, e) => `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=c45454&secondaryColor=a2a2a2&iconColor=eefdec&poster=true&title=true&nextbutton=false&player=jw&autoplay=true` },
+  { name: 'Server 1 (VidLink)', url: (id, s, e) => `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=c45454&secondaryColor=a2a2a2&iconColor=eefdec&poster=true&title=true&nextbutton=false&player=jw&autoplay=true` },
+  { name: 'Server 2 (VidSrc.cc)', url: (id, s, e) => `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}` },
   { name: 'Server 3 (VidSrc RU)', url: (id, s, e) => `https://vidsrc-embed.ru/embed/tv/${id}/${s}/${e}` },
   { name: 'Server 4 (Super)', url: (id, s, e) => `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` },
 ];
