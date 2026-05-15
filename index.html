@@ -53,11 +53,10 @@
       gtag('config', 'G-H670PNW2CH');
     </script>
     
-    <!-- Monetag Push Notification (zone 11008204) -->
+    <!-- Monetag Push Notification (zone 11008204) — service worker based -->
     <script src="https://5gvci.com/act/files/tag.min.js?z=11008204" data-cfasync="false" async></script>
-    <!-- Monetag Wise Tag / Multitag (zone 239444 — manages Vignette, In-Page Push, Popunder) -->
-    <script src="https://quge5.com/88/tag.min.js" data-zone="239444" async data-cfasync="false"></script>
-    <!-- Monetag In-Page Push (zone 11008150) — 30-min cooldown per user -->
+
+    <!-- Monetag Wise Tag (zone 239444) — auto-manages Vignette, In-Page Push & Popunder — 10-min cooldown -->
     <script>
       (function() {
         var COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes
@@ -65,10 +64,12 @@
         var last = parseInt(localStorage.getItem(key) || '0', 10);
         if (Date.now() - last >= COOLDOWN_MS) {
           localStorage.setItem(key, Date.now());
-          (function(s){
-            s.dataset.zone='11008150';
-            s.src='https://nap5k.com/tag.min.js';
-          })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+          var s = document.createElement('script');
+          s.src = 'https://quge5.com/88/tag.min.js';
+          s.dataset.zone = '239444';
+          s.async = true;
+          s.setAttribute('data-cfasync', 'false');
+          document.head.appendChild(s);
         }
       })();
     </script>
