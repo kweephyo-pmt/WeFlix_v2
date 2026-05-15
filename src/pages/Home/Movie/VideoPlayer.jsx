@@ -50,7 +50,7 @@ const VideoPlayer = ({ movieId }) => {
                     <iframe
                         key={iframeSrc}
                         src={iframeSrc}
-                        allow="fullscreen; picture-in-picture; encrypted-media;"
+                        allow="fullscreen *; picture-in-picture *; autoplay *; encrypted-media *; screen-wake-lock *;"
                         allowFullScreen
                         webkitallowfullscreen="true"
                         mozallowfullscreen="true"

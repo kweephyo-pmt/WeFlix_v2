@@ -4,5 +4,20 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Permissions-Policy",
+          "value": "fullscreen=*, picture-in-picture=*, autoplay=*, encrypted-media=*, screen-wake-lock=*"
+        },
+        {
+          "key": "Feature-Policy",
+          "value": "fullscreen *; picture-in-picture *; autoplay *; encrypted-media *"
+        }
+      ]
+    }
   ]
 }

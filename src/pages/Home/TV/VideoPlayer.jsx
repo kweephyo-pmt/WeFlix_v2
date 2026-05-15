@@ -52,7 +52,7 @@ const VideoPlayer = ({ tvId, season = 1, episode = 1 }) => {
                         src={iframeSrc}
                         title={`TV Show: ${tvId} - S${season}E${episode}`}
                         className="absolute inset-0 w-full h-full border-0"
-                        allow="fullscreen; picture-in-picture; encrypted-media;"
+                        allow="fullscreen *; picture-in-picture *; autoplay *; encrypted-media *; screen-wake-lock *;"
                         allowFullScreen
                         webkitallowfullscreen="true"
                         mozallowfullscreen="true"
