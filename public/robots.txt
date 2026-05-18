@@ -1,7 +1,12 @@
 User-agent: *
 Allow: /
 
-# Block API keys or private routes if any
+# Block private/admin routes
+Disallow: /admin/
 Disallow: /api/
+
+# Explicitly allow Googlebot full access
+User-agent: Googlebot
+Allow: /
 
 Sitemap: https://www.weflix.app/sitemap.xml

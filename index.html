@@ -20,29 +20,104 @@
     <link rel="manifest" href="/manifest.json" />
 
     <!-- Primary SEO -->
-    <title>WeFlix — Stream Movies &amp; TV Shows Free</title>
-    <meta name="description" content="Watch trending movies and TV shows free on WeFlix. Browse by genre, search thousands of titles, and stream instantly — powered by TMDB." />
+    <title>WeFlix — Free Movie &amp; TV Show Streaming | Watch Online</title>
+    <meta name="description" content="WeFlix is a free streaming platform to watch movies and TV shows online. Discover trending titles, browse by genre, and stream instantly — no sign-up required." />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-    <meta name="keywords" content="stream movies free, watch TV shows online, free movie streaming, WeFlix, trending movies, best TV series" />
+    <meta name="keywords" content="weflix, WeFlix, free streaming, watch movies online, watch TV shows online, free movie streaming, trending movies, best TV series, WeFlix app" />
+    <meta name="author" content="WeFlix" />
+    <meta name="application-name" content="WeFlix" />
+    <link rel="canonical" href="https://www.weflix.app/" />
 
     <!-- Open Graph -->
     <meta property="og:type"        content="website" />
     <meta property="og:site_name"   content="WeFlix" />
-    <meta property="og:title"       content="WeFlix — Stream Movies &amp; TV Shows Free" />
-    <meta property="og:description" content="Watch trending movies and TV shows free on WeFlix. Browse by genre, search thousands of titles, and stream instantly." />
+    <meta property="og:url"         content="https://www.weflix.app/" />
+    <meta property="og:title"       content="WeFlix — Free Movie &amp; TV Show Streaming" />
+    <meta property="og:description" content="WeFlix is a free streaming platform. Watch movies and TV shows online instantly — no subscription needed." />
     <meta property="og:image"       content="https://www.weflix.app/weflix2.png" />
-    <meta property="og:image:alt"   content="WeFlix app preview" />
+    <meta property="og:image:alt"   content="WeFlix — Free Movie &amp; TV Show Streaming" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:locale"      content="en_US" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card"        content="summary_large_image" />
-    <meta name="twitter:title"       content="WeFlix — Stream Movies &amp; TV Shows Free" />
-    <meta name="twitter:description" content="Watch trending movies and TV shows free on WeFlix. Browse by genre, search thousands of titles, and stream instantly." />
+    <meta name="twitter:site"        content="@weflixapp" />
+    <meta name="twitter:creator"     content="@weflixapp" />
+    <meta name="twitter:title"       content="WeFlix — Free Movie &amp; TV Show Streaming" />
+    <meta name="twitter:description" content="WeFlix is a free streaming platform. Watch movies and TV shows online instantly — no subscription needed." />
     <meta name="twitter:image"       content="https://www.weflix.app/weflix2.png" />
+    <meta name="twitter:image:alt"   content="WeFlix — Free Movie &amp; TV Show Streaming" />
 
     <!-- JSON-LD: WebSite schema with Sitelinks Searchbox -->
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"WeFlix","url":"https://www.weflix.app/","description":"Watch trending movies and TV shows free on WeFlix.","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.weflix.app/search?q={search_term_string}"},"query-input":"required name=search_term_string"}}</script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://www.weflix.app/#website",
+      "name": "WeFlix",
+      "alternateName": ["WeFlix App", "weflix"],
+      "url": "https://www.weflix.app/",
+      "description": "WeFlix is a free online streaming platform to watch movies and TV shows instantly.",
+      "inLanguage": "en-US",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.weflix.app/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD: Organization (Brand Entity) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://www.weflix.app/#organization",
+      "name": "WeFlix",
+      "alternateName": "WeFlix App",
+      "url": "https://www.weflix.app/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.weflix.app/weflix.svg",
+        "width": 512,
+        "height": 512
+      },
+      "description": "WeFlix is a free streaming platform where you can watch movies and TV shows online without a subscription.",
+      "sameAs": [
+        "https://www.weflix.app"
+      ]
+    }
+    </script>
+
+    <!-- JSON-LD: WebApplication (Product Entity) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "@id": "https://www.weflix.app/#webapp",
+      "name": "WeFlix",
+      "alternateName": ["WeFlix App", "weflix streaming"],
+      "url": "https://www.weflix.app/",
+      "applicationCategory": "EntertainmentApplication",
+      "operatingSystem": "Web, Android, iOS",
+      "browserRequirements": "Requires JavaScript",
+      "description": "WeFlix lets you stream movies and TV shows for free online. Browse thousands of titles by genre and watch instantly — no account required.",
+      "screenshot": "https://www.weflix.app/weflix2.png",
+      "featureList": "Free streaming, No subscription, Movies, TV Shows, Anime, K-Drama, Search, Genre browsing",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@id": "https://www.weflix.app/#organization"
+      }
+    }
+    </script>
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H670PNW2CH"></script>
