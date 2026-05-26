@@ -119,14 +119,18 @@ export default function AuthModal({ isOpen, onClose }) {
         // Register new user
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(userCredential.user, { displayName: name });
-        // Save to Firestore with the displayName we just set
-        saveUserToFirestore({ ...userCredential.user, displayName: name }).catch(console.error);
-        
-        // Send verification email
+
+        // Send verification email BEFORE writing to Firestore.
+        // The Firestore document is intentionally NOT created here — it will be
+        // written by saveUserToFirestore() on first successful verified login.
+        // This prevents unverified "ghost" rows from cluttering the database.
         const { sendEmailVerification } = await import('firebase/auth');
         await sendEmailVerification(userCredential.user);
-        
-        // We do NOT sign out here so they remain logged in locally.
+
+        // Sign out immediately so the user cannot access protected routes
+        // before they have verified their email address.
+        await auth.signOut();
+
         setVerificationSent(true);
         return; // Stop early so we show the success screen
       }
