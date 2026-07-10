@@ -5,9 +5,8 @@ import { FaServer } from 'react-icons/fa';
 const SOURCES = [
   { name: 'Server 1 (VidNest)', url: (id, s, e) => `https://vidnest.fun/tv/${id}/${s}/${e}` },
   { name: 'Server 2 (VidLink)', url: (id, s, e) => `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=c45454&secondaryColor=a2a2a2&iconColor=eefdec&poster=true&title=true&nextbutton=false&player=jw&autoplay=false` },
-  { name: 'Server 3 (VidSrc.cc)', url: (id, s, e) => `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}` },
-  { name: 'Server 4 (VidSrc RU)', url: (id, s, e) => `https://vidsrc-embed.ru/embed/tv/${id}/${s}/${e}` },
-  { name: 'Server 5 (Super)', url: (id, s, e) => `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` },
+  { name: 'Server 3 (VidSrc RU)', url: (id, s, e) => `https://vidsrc-embed.ru/embed/tv/${id}/${s}/${e}` },
+  { name: 'Server 4 (Super)', url: (id, s, e) => `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` },
 ];
 
 const VideoPlayer = ({ tvId, season = 1, episode = 1 }) => {

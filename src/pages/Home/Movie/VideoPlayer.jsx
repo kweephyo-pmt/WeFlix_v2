@@ -5,9 +5,8 @@ import { FaServer } from 'react-icons/fa';
 const SOURCES = [
   { name: 'Server 1 (VidNest)', url: (id) => `https://vidnest.fun/movie/${id}` },
   { name: 'Server 2 (VidLink)', url: (id) => `https://vidlink.pro/movie/${id}?primaryColor=c45454&secondaryColor=a2a2a2&iconColor=eefdec&poster=true&title=true&nextbutton=false&player=jw&autoplay=false` },
-  { name: 'Server 3 (VidSrc.cc)', url: (id) => `https://vidsrc.cc/v2/embed/movie/${id}?autoPlay=true` },
-  { name: 'Server 4 (VidSrc RU)', url: (id) => `https://vidsrc-embed.ru/embed/movie/${id}?autoPlay=true` },
-  { name: 'Server 5 (Super)', url: (id) => `https://multiembed.mov/?video_id=${id}&tmdb=1&autoPlay=true` },
+  { name: 'Server 3 (VidSrc RU)', url: (id) => `https://vidsrc-embed.ru/embed/movie/${id}?autoPlay=true` },
+  { name: 'Server 4 (Super)', url: (id) => `https://multiembed.mov/?video_id=${id}&tmdb=1&autoPlay=true` },
 ];
 
 const VideoPlayer = ({ movieId }) => {
