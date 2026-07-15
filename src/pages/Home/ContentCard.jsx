@@ -251,6 +251,7 @@ const ContentCard = memo(({
               popoutOrigin === 'left' ? 'origin-left' : popoutOrigin === 'right' ? 'origin-right' : 'origin-center'
             }`}
             onMouseLeave={handleMouseLeave}
+            onPointerDown={(e) => e.stopPropagation()}
           >
             {/* 16:9 Video Top */}
             <div className="relative w-full aspect-video bg-black cursor-pointer overflow-hidden">
