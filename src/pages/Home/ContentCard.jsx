@@ -287,6 +287,7 @@ const ContentCard = memo(({
               <button
                 type="button"
                 onClick={toggleMute}
+                onPointerDown={(e) => e.stopPropagation()}
                 className="absolute bottom-2 right-2 z-20 w-8 h-8 rounded-full bg-black/60 border border-white/30 flex items-center justify-center text-white hover:bg-black/80 hover:border-white transition-all backdrop-blur-sm"
               >
                 {isMuted ? <FaVolumeMute className="text-[11px]" /> : <FaVolumeUp className="text-[11px]" />}
