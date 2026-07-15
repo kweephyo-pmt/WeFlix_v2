@@ -81,6 +81,7 @@ const ContentCard = memo(({
 
   const toggleMute = useCallback((e) => {
     e.stopPropagation();
+    e.preventDefault();
     if (!iframeRef.current) return;
     const newState = !isMuted;
     setIsMuted(newState);
@@ -252,7 +253,7 @@ const ContentCard = memo(({
             onMouseLeave={handleMouseLeave}
           >
             {/* 16:9 Video Top */}
-            <div className="relative w-full aspect-video bg-black cursor-pointer overflow-hidden" onClick={onClick}>
+            <div className="relative w-full aspect-video bg-black cursor-pointer overflow-hidden">
               <iframe
                 ref={iframeRef}
                 title="Trailer"
@@ -284,6 +285,7 @@ const ContentCard = memo(({
               <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-[#181818] to-transparent pointer-events-none" />
               {/* Mute / Unmute button */}
               <button
+                type="button"
                 onClick={toggleMute}
                 className="absolute bottom-2 right-2 z-20 w-8 h-8 rounded-full bg-black/60 border border-white/30 flex items-center justify-center text-white hover:bg-black/80 hover:border-white transition-all backdrop-blur-sm"
               >
